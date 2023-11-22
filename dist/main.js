@@ -25,6 +25,8 @@ class Field {
         this.fieldMatrix = new Array(config_1.default.height);
         this.field = "";
         this.numOfHoles = config_1.default.numberOfHoles;
+        this.characterRowLocation = 0;
+        this.characterColumnLocation = 0;
         for (let i = 0; i < config_1.default.height; i++) {
             this.fieldMatrix[i] = new Array(config_1.default.width);
         }
@@ -68,6 +70,98 @@ class Field {
     getField() {
         return this.field;
     }
+    updatePath(inputDirection) {
+        const convertInputDirection = inputDirection.toString().toLocaleLowerCase();
+        switch (convertInputDirection) {
+            case Direction.up:
+                if (this.characterRowLocation === 0) {
+                    console.log(`Can't go up.`);
+                    this.renderField();
+                    return true;
+                }
+                else {
+                    this.characterRowLocation--;
+                    if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hole) {
+                        console.log('You fell in a hole... Game Over!');
+                        return false;
+                    }
+                    else if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hat) {
+                        console.log('You won!');
+                        return false;
+                    }
+                    this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] = CellValue.pathCharacter;
+                    this.fieldMatrix[this.characterRowLocation + 1][this.characterColumnLocation] = CellValue.fieldCharacter;
+                    this.renderField();
+                    return true;
+                }
+            case Direction.down:
+                if (this.characterRowLocation === this.fieldMatrix.length - 1) {
+                    console.log(`Can't go down.`);
+                    this.renderField();
+                    return true;
+                }
+                else {
+                    this.characterRowLocation++;
+                    if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hole) {
+                        console.log('You fell in a hole... Game Over!');
+                        return false;
+                    }
+                    else if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hat) {
+                        console.log('You won!');
+                        return false;
+                    }
+                    this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] = CellValue.pathCharacter;
+                    this.fieldMatrix[this.characterRowLocation - 1][this.characterColumnLocation] = CellValue.fieldCharacter;
+                    this.renderField();
+                    return true;
+                }
+            case Direction.right:
+                if (this.characterColumnLocation === this.fieldMatrix.length - 1) {
+                    console.log(`Can't go right.`);
+                    this.renderField();
+                    return true;
+                }
+                else {
+                    this.characterColumnLocation++;
+                    if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hole) {
+                        console.log('You fell in a hole... Game Over!');
+                        return false;
+                    }
+                    else if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hat) {
+                        console.log('You won!');
+                        return false;
+                    }
+                    this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] = CellValue.pathCharacter;
+                    this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation - 1] = CellValue.fieldCharacter;
+                    this.renderField();
+                    return true;
+                }
+            case Direction.left:
+                if (this.characterColumnLocation === 0) {
+                    console.log(`Can't go left.`);
+                    this.renderField();
+                    return true;
+                }
+                else {
+                    this.characterColumnLocation--;
+                    if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hole) {
+                        console.log('You fell in a hole... Game Over!');
+                        return false;
+                    }
+                    else if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hat) {
+                        console.log('You won!');
+                        return false;
+                    }
+                    this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] = CellValue.pathCharacter;
+                    this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation + 1] = CellValue.fieldCharacter;
+                    this.renderField();
+                    return true;
+                }
+            default:
+                console.log(`Invalid key, try using the keys ${Direction.down} (down), ${Direction.up} (up), ${Direction.right} (right) or ${Direction.left} (left)`);
+                return true;
+        }
+    }
 }
 class Game {
     constructor() {
@@ -79,6 +173,7 @@ class Game {
             console.log(this.field.getField());
             let directionInput = prompt("Which direction? ");
             this.checkUserInput(directionInput);
+            this.isPlaying = this.field.updatePath(directionInput);
         }
     }
     checkUserInput(userInput) {
