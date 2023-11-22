@@ -40,16 +40,13 @@ class Field {
   }
   private generateHoles(): void {
     for (let index = 0; index < this.numOfHoles; index++) {
-      let rndRow = Math.floor(Math.random() * config.width);
-      let rndCol = Math.floor(Math.random() * config.height);
-      while (this.fieldMatrix[rndRow][rndCol] == CellValue.hole) {
-        rndRow = Math.floor(Math.random() * config.width);
-        rndCol = Math.floor(Math.random() * config.height);
-      }
-      this.fieldMatrix[rndRow][rndCol] = CellValue.hole;
+      this.generateRndPositions(CellValue.hole);
     }
   }
   private generateHat(): void {
+    this.generateRndPositions(CellValue.hat);
+  }
+  private generateRndPositions(cellValue: string): void {
     let rndRow = Math.floor(Math.random() * config.width);
     let rndCol = Math.floor(Math.random() * config.height);
     while (
@@ -59,7 +56,7 @@ class Field {
       rndRow = Math.floor(Math.random() * config.width);
       rndCol = Math.floor(Math.random() * config.height);
     }
-    this.fieldMatrix[rndRow][rndCol] = CellValue.hat;
+    this.fieldMatrix[rndRow][rndCol] = cellValue;
   }
   private renderField(): void {
     this.field = this.fieldMatrix.map((row) => row.join("")).join("\n");
