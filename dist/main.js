@@ -13,6 +13,14 @@ var CellValue;
     CellValue["hat"] = "^";
     CellValue["hole"] = "O";
 })(CellValue || (CellValue = {}));
+var ErrorMessages;
+(function (ErrorMessages) {
+    ErrorMessages["feedBack"] = "You must enter the letters 'd','l','u'";
+    ErrorMessages["invalidDirection"] = "Invalid key, try using the keys d (down), u (up), r (right) or l (left)";
+    ErrorMessages["invalidMove"] = "Invalid Move ";
+    ErrorMessages["gameOver"] = "You fell in a hole... Game Over!";
+    ErrorMessages["youWon"] = "You won!";
+})(ErrorMessages || (ErrorMessages = {}));
 var Direction;
 (function (Direction) {
     Direction["down"] = "d";
@@ -79,11 +87,11 @@ class Field {
                 else {
                     this.characterRowLocation--;
                     if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hole) {
-                        console.log('You fell in a hole... Game Over!');
+                        console.log("You fell in a hole... Game Over!");
                         return false;
                     }
                     else if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hat) {
-                        console.log('You won!');
+                        console.log("You won!");
                         return false;
                     }
                     this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] = CellValue.pathCharacter;
@@ -100,15 +108,15 @@ class Field {
                 else {
                     this.characterRowLocation++;
                     if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hole) {
-                        console.log('You fell in a hole... Game Over!');
+                        console.log("You fell in a hole... Game Over!");
                         return false;
                     }
                     else if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hat) {
-                        console.log('You won!');
+                        console.log("You won!");
                         return false;
                     }
                     this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] = CellValue.pathCharacter;
-                    this.fieldMatrix[this.characterRowLocation - 1][this.characterColumnLocation] = CellValue.fieldCharacter;
+                    this.fieldMatrix[this.characterRowLocation - 1][this.characterColumnLocation] = CellValue.pathCharacter;
                     this.renderField();
                     return true;
                 }
@@ -121,15 +129,15 @@ class Field {
                 else {
                     this.characterColumnLocation++;
                     if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hole) {
-                        console.log('You fell in a hole... Game Over!');
+                        console.log("You fell in a hole... Game Over!");
                         return false;
                     }
                     else if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hat) {
-                        console.log('You won!');
+                        console.log("You won!");
                         return false;
                     }
                     this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] = CellValue.pathCharacter;
-                    this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation - 1] = CellValue.fieldCharacter;
+                    this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation - 1] = CellValue.pathCharacter;
                     this.renderField();
                     return true;
                 }
@@ -142,15 +150,15 @@ class Field {
                 else {
                     this.characterColumnLocation--;
                     if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hole) {
-                        console.log('You fell in a hole... Game Over!');
+                        console.log("You fell in a hole... Game Over!");
                         return false;
                     }
                     else if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hat) {
-                        console.log('You won!');
+                        console.log("You won!");
                         return false;
                     }
                     this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] = CellValue.pathCharacter;
-                    this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation + 1] = CellValue.fieldCharacter;
+                    this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation + 1] = CellValue.pathCharacter;
                     this.renderField();
                     return true;
                 }

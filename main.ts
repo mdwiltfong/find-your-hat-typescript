@@ -9,21 +9,30 @@ enum CellValue {
   hole = "O",
 }
 
+enum ErrorMessages {
+  feedBack = "You must enter the letters 'd','l','u'",
+  invalidDirection = "Invalid key, try using the keys d (down), u (up), r (right) or l (left)",
+  invalidMove = "Invalid Move ",
+  gameOver = "You fell in a hole... Game Over!",
+  youWon = "You won!",
+}
+
 enum Direction {
   down = "d",
   up = "u",
   left = "l",
   right = "r",
 }
+
 class Field {
-  private fieldMatrix: string[][] = new Array<string[]>(config.height);
+  private fieldMatrix: CellValue[][] = new Array<CellValue[]>(config.height);
   private field: string = "";
   private numOfHoles: number = config.numberOfHoles;
-  private characterRowLocation: number = 0 ;
+  private characterRowLocation: number = 0;
   private characterColumnLocation: number = 0;
   constructor() {
     for (let i = 0; i < config.height; i++) {
-      this.fieldMatrix[i] = new Array<string>(config.width);
+      this.fieldMatrix[i] = new Array<CellValue>(config.width);
     }
     this.generateField();
     this.generateHoles();
@@ -46,7 +55,7 @@ class Field {
   private generateHat(): void {
     this.generateRndPositions(CellValue.hat);
   }
-  private generateRndPositions(cellValue: string): void {
+  private generateRndPositions(cellValue: CellValue): void {
     let rndRow = Math.floor(Math.random() * config.width);
     let rndCol = Math.floor(Math.random() * config.height);
     while (
@@ -64,7 +73,7 @@ class Field {
   getField(): string {
     return this.field;
   }
-  
+
   updatePath(inputDirection: string): boolean {
     const convertInputDirection = inputDirection.toString().toLocaleLowerCase();
     switch (convertInputDirection) {
@@ -75,15 +84,27 @@ class Field {
           return true;
         } else {
           this.characterRowLocation--;
-          if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hole) {
-            console.log('You fell in a hole... Game Over!');
+          if (
+            this.fieldMatrix[this.characterRowLocation][
+              this.characterColumnLocation
+            ] === CellValue.hole
+          ) {
+            console.log("You fell in a hole... Game Over!");
             return false;
-          } else if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hat) {
-            console.log('You won!');
+          } else if (
+            this.fieldMatrix[this.characterRowLocation][
+              this.characterColumnLocation
+            ] === CellValue.hat
+          ) {
+            console.log("You won!");
             return false;
           }
-          this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] = CellValue.pathCharacter;
-          this.fieldMatrix[this.characterRowLocation + 1][this.characterColumnLocation] = CellValue.fieldCharacter;
+          this.fieldMatrix[this.characterRowLocation][
+            this.characterColumnLocation
+          ] = CellValue.pathCharacter;
+          this.fieldMatrix[this.characterRowLocation + 1][
+            this.characterColumnLocation
+          ] = CellValue.fieldCharacter;
           this.renderField();
           return true;
         }
@@ -94,15 +115,27 @@ class Field {
           return true;
         } else {
           this.characterRowLocation++;
-          if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hole) {
-            console.log('You fell in a hole... Game Over!');
+          if (
+            this.fieldMatrix[this.characterRowLocation][
+              this.characterColumnLocation
+            ] === CellValue.hole
+          ) {
+            console.log("You fell in a hole... Game Over!");
             return false;
-          } else if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hat) {
-            console.log('You won!');
+          } else if (
+            this.fieldMatrix[this.characterRowLocation][
+              this.characterColumnLocation
+            ] === CellValue.hat
+          ) {
+            console.log("You won!");
             return false;
           }
-          this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] = CellValue.pathCharacter;
-          this.fieldMatrix[this.characterRowLocation - 1][this.characterColumnLocation] = CellValue.fieldCharacter;
+          this.fieldMatrix[this.characterRowLocation][
+            this.characterColumnLocation
+          ] = CellValue.pathCharacter;
+          this.fieldMatrix[this.characterRowLocation - 1][
+            this.characterColumnLocation
+          ] = CellValue.pathCharacter;
           this.renderField();
           return true;
         }
@@ -113,15 +146,27 @@ class Field {
           return true;
         } else {
           this.characterColumnLocation++;
-          if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hole) {
-            console.log('You fell in a hole... Game Over!');
+          if (
+            this.fieldMatrix[this.characterRowLocation][
+              this.characterColumnLocation
+            ] === CellValue.hole
+          ) {
+            console.log("You fell in a hole... Game Over!");
             return false;
-          } else if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hat) {
-            console.log('You won!');
+          } else if (
+            this.fieldMatrix[this.characterRowLocation][
+              this.characterColumnLocation
+            ] === CellValue.hat
+          ) {
+            console.log("You won!");
             return false;
           }
-          this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] = CellValue.pathCharacter;
-          this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation - 1] = CellValue.fieldCharacter;
+          this.fieldMatrix[this.characterRowLocation][
+            this.characterColumnLocation
+          ] = CellValue.pathCharacter;
+          this.fieldMatrix[this.characterRowLocation][
+            this.characterColumnLocation - 1
+          ] = CellValue.pathCharacter;
           this.renderField();
           return true;
         }
@@ -132,23 +177,37 @@ class Field {
           return true;
         } else {
           this.characterColumnLocation--;
-          if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hole) {
-            console.log('You fell in a hole... Game Over!');
+          if (
+            this.fieldMatrix[this.characterRowLocation][
+              this.characterColumnLocation
+            ] === CellValue.hole
+          ) {
+            console.log("You fell in a hole... Game Over!");
             return false;
-          } else if (this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] === CellValue.hat) {
-            console.log('You won!');
+          } else if (
+            this.fieldMatrix[this.characterRowLocation][
+              this.characterColumnLocation
+            ] === CellValue.hat
+          ) {
+            console.log("You won!");
             return false;
           }
-          this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation] = CellValue.pathCharacter;
-          
-          this.fieldMatrix[this.characterRowLocation][this.characterColumnLocation + 1] = CellValue.fieldCharacter;
+          this.fieldMatrix[this.characterRowLocation][
+            this.characterColumnLocation
+          ] = CellValue.pathCharacter;
+
+          this.fieldMatrix[this.characterRowLocation][
+            this.characterColumnLocation + 1
+          ] = CellValue.pathCharacter;
           this.renderField();
           return true;
         }
       default:
-        console.log(`Invalid key, try using the keys ${Direction.down} (down), ${Direction.up} (up), ${Direction.right} (right) or ${Direction.left} (left)`);
+        console.log(
+          `Invalid key, try using the keys ${Direction.down} (down), ${Direction.up} (up), ${Direction.right} (right) or ${Direction.left} (left)`
+        );
         return true;
-    } 
+    }
   }
 }
 
